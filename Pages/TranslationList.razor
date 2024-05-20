@@ -3,20 +3,24 @@
 @using wordcollector.Models
 @inject IJSRuntime JSRuntime
 
-<h3>Translation List</h3>
+<h3>
+    <wordcollector.Components.Furigana kanji="翻訳" furigana="ほんやく" />リスト
+</h3>
 
 <div class="mb-3">
-    <input @bind="searchTerm" @bind:event="oninput" placeholder="Search..." class="form-control" />
-    <button class="btn btn-primary mt-2" @onclick="Search">Search</button>
+    <input @bind="searchTerm" @bind:event="oninput" placeholder="探索..." class="form-control" />
+    <button class="btn btn-primary mt-2" @onclick="Search">
+        <wordcollector.Components.Furigana kanji="探索" furigana="たんさく"/>
+    </button>
 </div>
 
 <table class="table">
     <thead>
         <tr>
-            <th @onclick='() => SortBy("Japanese")'>Japanese</th>
-            <th @onclick='() => SortBy("Kanji")'>Kanji</th>
-            <th @onclick='() => SortBy("English")'>English</th>
-            <th>Actions</th>
+            <th @onclick='() => SortBy("Japanese")'>日本語</th>
+            <th @onclick='() => SortBy("Kanji")'>漢字</th>
+            <th @onclick='() => SortBy("English")'>英語</th>
+            <th>アクション</th>
         </tr>
     </thead>
     <tbody>
@@ -26,7 +30,9 @@
                 <td>@entry.Japanese</td>
                 <td>@entry.Kanji</td>
                 <td>@entry.English</td>
-                <td><button class="btn btn-danger" @onclick="() => DeleteEntry(entry)">Delete</button></td>
+                <td><button class="btn btn-danger" @onclick="() => DeleteEntry(entry)">
+                        <wordcollector.Components.Furigana kanji="削除" furigana="さくじょ" />
+                </button></td>
             </tr>
         }
     </tbody>

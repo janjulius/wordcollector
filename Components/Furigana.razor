@@ -1,0 +1,12 @@
+﻿@code {
+    [Parameter]
+    public string kanji { get; set; }
+
+    [Parameter]
+    public string furigana { get; set; }
+}
+
+<ruby>
+    @kanji
+    <rt>@furigana</rt>
+</ruby>
