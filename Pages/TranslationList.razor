@@ -16,6 +16,7 @@
             <th @onclick='() => SortBy("Japanese")'>Japanese</th>
             <th @onclick='() => SortBy("Kanji")'>Kanji</th>
             <th @onclick='() => SortBy("English")'>English</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +26,7 @@
                 <td>@entry.Japanese</td>
                 <td>@entry.Kanji</td>
                 <td>@entry.English</td>
+                <td><button class="btn btn-danger" @onclick="() => DeleteEntry(entry)">Delete</button></td>
             </tr>
         }
     </tbody>
@@ -95,5 +97,29 @@
             "English" => ascending ? filteredEntries.OrderBy(e => e.English).ToList() : filteredEntries.OrderByDescending(e => e.English).ToList(),
             _ => filteredEntries
         };
+    }
+
+    private async Task DeleteEntry(TranslationEntry entry)
+    {
+        if (entries.Contains(entry))
+        {
+            entries.Remove(entry);
+            await SaveEntriesAsync();
+            FilterAndSortEntries();
+        }
+    }
+
+    private async Task SaveEntriesAsync()
+    {
+        try
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            var json = JsonSerializer.Serialize(entries, options);
+            await File.WriteAllTextAsync("data/translations.json", json);
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Error saving entries: {ex.Message}");
+        }
     }
 }

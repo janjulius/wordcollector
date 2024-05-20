@@ -12,6 +12,7 @@
     <div class="mb-3">
         <label for="japanese" class="form-label">Japanese</label>
         <InputText id="japanese" class="form-control" @bind-Value="translationEntry.Japanese" />
+        <ValidationMessage For="@(() => translationEntry.Japanese)" />
     </div>
     <div class="mb-3">
         <label for="kanji" class="form-label">Kanji</label>
@@ -20,6 +21,7 @@
     <div class="mb-3">
         <label for="english" class="form-label">English</label>
         <InputText id="english" class="form-control" @bind-Value="translationEntry.English" />
+        <ValidationMessage For="@(() => translationEntry.English)" />
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </EditForm>
@@ -29,33 +31,29 @@
 
     private async Task HandleValidSubmit()
     {
-        var entries = new List<TranslationEntry>();
-
         try
         {
-            // Load existing entries
-            if (File.Exists("data/translations.json"))
+            var entries = new List<TranslationEntry>();
+            var filePath = "data/translations.json";
+
+            if (File.Exists(filePath))
             {
-                var json = await File.ReadAllTextAsync("data/translations.json");
+                var json = await File.ReadAllTextAsync(filePath);
                 entries = JsonSerializer.Deserialize<List<TranslationEntry>>(json) ?? new List<TranslationEntry>();
             }
 
-            // Add new entry
             entries.Add(translationEntry);
 
-            // Save entries to file
             var options = new JsonSerializerOptions { WriteIndented = true };
             var updatedJson = JsonSerializer.Serialize(entries, options);
-            await File.WriteAllTextAsync("data/translations.json", updatedJson);
+            await File.WriteAllTextAsync(filePath, updatedJson);
 
-            // Clear the form
             translationEntry = new TranslationEntry();
-
             await JSRuntime.InvokeVoidAsync("alert", "Entry added successfully!");
         }
         catch (Exception ex)
         {
-            await JSRuntime.InvokeVoidAsync("alert", $"Error: {ex.Message}");
+            await JSRuntime.InvokeVoidAsync("alert", $"Error saving entry: {ex.Message}");
         }
     }
 }
