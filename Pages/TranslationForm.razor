@@ -1,0 +1,61 @@
+﻿@page "/translation-form"
+@using System.Text.Json;
+@using wordcollector.Models;
+@inject IJSRuntime JSRuntime
+
+<h3>Translation Form</h3>
+
+<EditForm Model="@translationEntry" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="japanese" class="form-label">Japanese</label>
+        <InputText id="japanese" class="form-control" @bind-Value="translationEntry.Japanese" />
+    </div>
+    <div class="mb-3">
+        <label for="kanji" class="form-label">Kanji</label>
+        <InputText id="kanji" class="form-control" @bind-Value="translationEntry.Kanji" />
+    </div>
+    <div class="mb-3">
+        <label for="english" class="form-label">English</label>
+        <InputText id="english" class="form-control" @bind-Value="translationEntry.English" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code {
+    private TranslationEntry translationEntry = new TranslationEntry();
+
+    private async Task HandleValidSubmit()
+    {
+        var entries = new List<TranslationEntry>();
+
+        try
+        {
+            // Load existing entries
+            if (File.Exists("data/translations.json"))
+            {
+                var json = await File.ReadAllTextAsync("data/translations.json");
+                entries = JsonSerializer.Deserialize<List<TranslationEntry>>(json) ?? new List<TranslationEntry>();
+            }
+
+            // Add new entry
+            entries.Add(translationEntry);
+
+            // Save entries to file
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            var updatedJson = JsonSerializer.Serialize(entries, options);
+            await File.WriteAllTextAsync("data/translations.json", updatedJson);
+
+            // Clear the form
+            translationEntry = new TranslationEntry();
+
+            await JSRuntime.InvokeVoidAsync("alert", "Entry added successfully!");
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Error: {ex.Message}");
+        }
+    }
+}

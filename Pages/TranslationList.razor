@@ -1,0 +1,99 @@
+﻿@page "/translation-list"
+@using System.Text.Json;
+@using wordcollector.Models
+@inject IJSRuntime JSRuntime
+
+<h3>Translation List</h3>
+
+<div class="mb-3">
+    <input @bind="searchTerm" @bind:event="oninput" placeholder="Search..." class="form-control" />
+    <button class="btn btn-primary mt-2" @onclick="Search">Search</button>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th @onclick='() => SortBy("Japanese")'>Japanese</th>
+            <th @onclick='() => SortBy("Kanji")'>Kanji</th>
+            <th @onclick='() => SortBy("English")'>English</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var entry in filteredEntries)
+        {
+            <tr>
+                <td>@entry.Japanese</td>
+                <td>@entry.Kanji</td>
+                <td>@entry.English</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<TranslationEntry> entries = new List<TranslationEntry>();
+    private List<TranslationEntry> filteredEntries = new List<TranslationEntry>();
+    private string currentSortColumn = "Japanese";
+    private bool ascending = true;
+    private string searchTerm = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadEntriesAsync();
+        FilterAndSortEntries();
+    }
+
+    private async Task LoadEntriesAsync()
+    {
+        try
+        {
+            if (File.Exists("data/translations.json"))
+            {
+                var json = await File.ReadAllTextAsync("data/translations.json");
+                entries = JsonSerializer.Deserialize<List<TranslationEntry>>(json) ?? new List<TranslationEntry>();
+                filteredEntries = new List<TranslationEntry>(entries);
+            }
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Error loading entries: {ex.Message}");
+        }
+    }
+
+    private void SortBy(string column)
+    {
+        if (currentSortColumn == column)
+        {
+            ascending = !ascending;
+        }
+        else
+        {
+            currentSortColumn = column;
+            ascending = true;
+        }
+        FilterAndSortEntries();
+    }
+
+    private void Search()
+    {
+        FilterAndSortEntries();
+    }
+
+    private void FilterAndSortEntries()
+    {
+        filteredEntries = entries
+            .Where(e => string.IsNullOrWhiteSpace(searchTerm) ||
+                        e.Japanese.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        e.Kanji.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                        e.English.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+            .ToList();
+
+        filteredEntries = currentSortColumn switch
+        {
+            "Japanese" => ascending ? filteredEntries.OrderBy(e => e.Japanese).ToList() : filteredEntries.OrderByDescending(e => e.Japanese).ToList(),
+            "Kanji" => ascending ? filteredEntries.OrderBy(e => e.Kanji).ToList() : filteredEntries.OrderByDescending(e => e.Kanji).ToList(),
+            "English" => ascending ? filteredEntries.OrderBy(e => e.English).ToList() : filteredEntries.OrderByDescending(e => e.English).ToList(),
+            _ => filteredEntries
+        };
+    }
+}
