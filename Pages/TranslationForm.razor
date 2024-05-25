@@ -62,6 +62,12 @@
                 entries = JsonSerializer.Deserialize<List<TranslationEntry>>(json) ?? new List<TranslationEntry>();
             }
 
+            if (entries.Any(e => e.Japanese == translationEntry.Japanese))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", $"「完成したじゃないです」　{translationEntry.Japanese}があります");
+                return;
+            }
+
             entries.Add(translationEntry);
 
             var options = new JsonSerializerOptions { WriteIndented = true };
@@ -69,7 +75,7 @@
             await File.WriteAllTextAsync(filePath, updatedJson);
 
             translationEntry = new TranslationEntry();
-            await JSRuntime.InvokeVoidAsync("alert", "Entry added successfully!");
+            await JSRuntime.InvokeVoidAsync("alert", "完成した");
         }
         catch (Exception ex)
         {
