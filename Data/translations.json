@@ -583,5 +583,90 @@
     "Japanese": "\u308A\u3087\u3046\u3057\u3093",
     "Kanji": "\u4E21\u89AA",
     "English": "parents"
+  },
+  {
+    "Japanese": "\u3058\u3085\u3093\u3073",
+    "Kanji": "\u6E96\u5099",
+    "English": "preparation"
+  },
+  {
+    "Japanese": "\u30D0\u30C3\u30C1\u30EA",
+    "Kanji": null,
+    "English": "perfect / right on the mark / bang on"
+  },
+  {
+    "Japanese": "\u305B\u3044\u3068",
+    "Kanji": "\u751F\u5F92",
+    "English": "pupil / student"
+  },
+  {
+    "Japanese": "\u3044\u3061\u3070\u3093",
+    "Kanji": "\u4E00\u756A",
+    "English": "first / first of all"
+  },
+  {
+    "Japanese": "\u3053\u3053\u3067\u306F",
+    "Kanji": null,
+    "English": "here we have"
+  },
+  {
+    "Japanese": "\u305D\u3068",
+    "Kanji": "\u5916",
+    "English": "outside"
+  },
+  {
+    "Japanese": "\u3067\u308B",
+    "Kanji": "\u51FA\u308B",
+    "English": "to go out"
+  },
+  {
+    "Japanese": "\u3068\u306A\u308B",
+    "Kanji": null,
+    "English": "to become"
+  },
+  {
+    "Japanese": "\u304F\u3055",
+    "Kanji": "\u8349",
+    "English": "grass"
+  },
+  {
+    "Japanese": "\u307B\u306E\u304A",
+    "Kanji": "\u708E",
+    "English": "flame / blaze"
+  },
+  {
+    "Japanese": "\u307F\u306A\u3055\u3093",
+    "Kanji": "\u7686\u3055\u3093",
+    "English": "everyone / ladies and gentlemen"
+  },
+  {
+    "Japanese": "\u305B\u3093\u305F\u304F",
+    "Kanji": "\u9078\u629E",
+    "English": "selection"
+  },
+  {
+    "Japanese": "\u3057\u3064\u308C\u3044",
+    "Kanji": "\u5931\u793C",
+    "English": "excuse me"
+  },
+  {
+    "Japanese": "\u3042\u308B\u3044\u3066",
+    "Kanji": "\u6B69\u3044\u3066",
+    "English": "to walk"
+  },
+  {
+    "Japanese": "\u3066\u306B\u308C\u3044\u305F",
+    "Kanji": "\u624B\u306B\u5165\u308C\u305F",
+    "English": "to get"
+  },
+  {
+    "Japanese": "\u304A\u304A\u304F",
+    "Kanji": "\u591A\u304F",
+    "English": "many"
+  },
+  {
+    "Japanese": "\u30A2\u30D7\u30EA",
+    "Kanji": null,
+    "English": "app"
   }
 ]
