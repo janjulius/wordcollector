@@ -65,6 +65,7 @@
             if (entries.Any(e => e.Japanese == translationEntry.Japanese))
             {
                 await JSRuntime.InvokeVoidAsync("alert", $"「完成したじゃないです」　{translationEntry.Japanese}があります");
+                StateHasChanged();
                 return;
             }
 
